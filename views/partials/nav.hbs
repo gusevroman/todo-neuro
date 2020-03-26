@@ -1,0 +1,20 @@
+<nav class="blue darken-4">
+  <div class="nav-wrapper">
+    <a href="/" class="brand-logo">Just Do It</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+
+      {{#if isTodos}}
+      <li class="active"><a href="/todos">Задачи</a></li>
+      {{else}}
+      <li><a href="/todos">Задачи</a></li>
+      {{/if}}
+
+      {{#if isCreate}}
+      <li class="active"><a href="/todos/create">Создать</a></li>
+      {{else}}
+      <li><a href="/todos/create">Создать</a></li>
+      {{/if}}
+
+    </ul>
+  </div>
+</nav>
