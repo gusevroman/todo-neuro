@@ -5,14 +5,15 @@ const router = Router()
 
 
 /* GET Todos page. */
-router.get('/todos', async (req, res) => {
-  const todos = await Todo.find({})
-  res.render('index', {
+router.get('/', async (req, res) => {
+  const todos = await Todo.find({});
+  res.render('todos', {
     title: 'Список задач',
     isTodos: true,
-    todos
+    todos,
   })
 })
+
 
 router.get('/create', (req, res) => {
   res.render('create', {
@@ -25,20 +26,17 @@ router.post('/create', async (req, res) => {
   const todo = new Todo({
     title: req.body.title
   })
-
   await todo.save()
-  res.redirect('/')
+  res.redirect('/todos')
 })
 
 router.post('/complete', async (req, res) => {
-  const todo = await Todo.findById(req.body.id)
-
-  todo.completed = !!req.body.completed
+  const todo = await Todo.findById(req.body._id)
+  todo.completed = req.body.completed
   await todo.save()
 
-  res.redirect('/')
+  res.redirect('/todos')
 })
-
 
 
 module.exports = router

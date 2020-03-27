@@ -2,34 +2,45 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const logger = require('morgan');
 const expressHbs = require('express-handlebars');
+const mongoose = require('mongoose');
 
 
 const indexRouter = require('./routes/index');
-const todoRouter = require('./routes/todos')
+const todoRouter = require('./routes/todos');
 
+// connect MongoDB
+const mongoDB = 'mongodb+srv://rom:alex@cluster0-0k0hb.mongodb.net/todo'
+mongoose.connect(mongoDB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+});
 
 const app = express();
 
 const hbs = expressHbs.create({
   defaultLayout: 'main',
   extname: 'hbs'
-})
+});
 
 // view engine setup
-app.engine('hbs', hbs.engine)
+app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(logger('dev'));
+app.use(bodyParser.json());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/todos', todoRouter)
+app.use('/todos', todoRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
