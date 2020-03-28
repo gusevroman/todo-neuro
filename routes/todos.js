@@ -6,7 +6,7 @@ const router = Router()
 
 /* GET Todos page. */
 router.get('/', async (req, res) => {
-  const todos = await Todo.find({});
+  const todos = await Todo.find({}).lean();
   res.render('todos', {
     title: 'Список задач',
     isTodos: true,
@@ -31,11 +31,17 @@ router.post('/create', async (req, res) => {
 })
 
 router.post('/complete', async (req, res) => {
-  const todo = await Todo.findById(req.body._id)
-  todo.completed = req.body.completed
-  await todo.save()
-
-  res.redirect('/todos')
+  try {
+    const {id} = req.body;
+    console.log(id);
+    const todo = await Todo.findById(id).lean();// but need BSON ((
+    console.log(`todo from DB: ${todo}`);
+    todo.completed = req.body.completed
+    await todo.save();
+    res.redirect('/todos')
+  } catch (error) {
+    console.log(`Do not change status todo ${todo}. \nError: ${error}`);
+  }
 })
 
 

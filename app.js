@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const expressHbs = require('express-handlebars');
+const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 
 
@@ -17,12 +17,12 @@ mongoose.connect(mongoDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
-  useFindAndModify: false,
+  useFindAndModify: true,
 });
 
 const app = express();
 
-const hbs = expressHbs.create({
+const hbs = exphbs.create({
   defaultLayout: 'main',
   extname: 'hbs'
 });

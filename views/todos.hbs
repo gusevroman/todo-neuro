@@ -1,13 +1,8 @@
 <h2>Планировщик NeuroToDo</h2>
 
 {{#if todos.length}}
-<span>{{todos}} - title</span>
-{{#each todos}}
-<div>{{this}} arrr</div>
-{{/each}}
 <ul>
   {{#each todos}}
-  <span>{{this}} - title</span>
   <li class="todo">
 
     <form action="/todos/complete" method="POST">
