@@ -48,5 +48,16 @@ router.post('/complete', async (req, res) => {
   }
 })
 
+router.delete('delete/:id', (req, res) => {
+  try {
+    console.log(`req.params: ${req.params}`);
+    const { id } = req.params;
+    Todo.delete(id)
+
+  } catch (error) {
+    console.log(`Todo ${req.params.id} don\'t removed. \n ${error}`);
+  }
+})
+
 
 module.exports = router
