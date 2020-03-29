@@ -18,7 +18,9 @@ mongoose.connect(mongoDB, {
   useUnifiedTopology: true,
   useCreateIndex: true,
   useFindAndModify: true,
-});
+})
+  .then(() => console.log(`Successfully connect to the database: ${mongoDB}`))
+  .catch(err => console.log(`Could not connect to database: ${mongoDB}.\n`, err));
 
 const app = express();
 

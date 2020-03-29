@@ -1,6 +1,7 @@
 const { Router } = require('express')
 
 const Todo = require('../models/Todo')
+const todo_controller = require('../controllers/todo.controller')
 const router = Router()
 
 
@@ -30,7 +31,7 @@ router.post('/create', async (req, res) => {
   res.redirect('/todos')
 })
 
-router.post('/complete', async (req, res) => {
+router.post('/complete', (req, res) => {
   try {
     const { id, completed } = req.body;
     Todo.findById(id)
@@ -48,14 +49,18 @@ router.post('/complete', async (req, res) => {
   }
 })
 
-router.delete('delete/:id', (req, res) => {
+router.post('/delete', (req, res) => {
   try {
-    console.log(`req.params: ${req.params}`);
-    const { id } = req.params;
-    Todo.delete(id)
-
+    const { id } = req.body;
+    Todo.findByIdAndDelete(id)
+      .then(
+        res.redirect('/todos')
+      )
+      .catch(
+        error => console.log('Todo was not deleted', error)
+      )
   } catch (error) {
-    console.log(`Todo ${req.params.id} don\'t removed. \n ${error}`);
+    console.log(`Todo wasn\'t removed. \n Error: \n${error}`);
   }
 })
 

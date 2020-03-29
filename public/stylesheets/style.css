@@ -28,6 +28,18 @@ body {
     margin: 0 0 2rem 2rem;
 }
 
+.todo-delete {
+    background-color: #ff00008a;
+}
+
+.icon-delete:hover {
+    color: #ff00008a;
+}
+
+.icon-delete:active {
+    color: red
+}
+
 
 /* a {
     color: #00B7FF;
