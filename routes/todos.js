@@ -6,7 +6,7 @@ const router = Router()
 
 /* GET Todos page. */
 router.get('/', async (req, res) => {
-  const todos = await Todo.find({});
+  const todos = await Todo.find({}).lean();
   res.render('todos', {
     title: 'Список задач',
     isTodos: true,
@@ -31,11 +31,21 @@ router.post('/create', async (req, res) => {
 })
 
 router.post('/complete', async (req, res) => {
-  const todo = await Todo.findById(req.body._id)
-  todo.completed = req.body.completed
-  await todo.save()
-
-  res.redirect('/todos')
+  try {
+    const { id, completed } = req.body;
+    Todo.findById(id)
+      .then(data => {
+        data.completed = !!completed;
+        console.log(`data IN Todo ${data.completed}`);
+        data.save();
+        res.redirect('/todos')
+      }
+      ).catch((error) => {
+        console.log(`Don\'t change status todo. \n ${error}`);
+      });
+  } catch (error) {
+    console.log(`Do not change status todo ${todo}. \nError: ${error}`);
+  }
 })
 
 
