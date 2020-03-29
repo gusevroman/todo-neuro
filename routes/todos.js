@@ -32,13 +32,17 @@ router.post('/create', async (req, res) => {
 
 router.post('/complete', async (req, res) => {
   try {
-    const {id} = req.body;
-    console.log(id);
-    const todo = await Todo.findById(id).lean();// but need BSON ((
-    console.log(`todo from DB: ${todo}`);
-    todo.completed = req.body.completed
-    await todo.save();
-    res.redirect('/todos')
+    const { id, completed } = req.body;
+    Todo.findById(id)
+      .then(data => {
+        data.completed = !!completed;
+        console.log(`data IN Todo ${data.completed}`);
+        data.save();
+        res.redirect('/todos')
+      }
+      ).catch((error) => {
+        console.log(`Don\'t change status todo. \n ${error}`);
+      });
   } catch (error) {
     console.log(`Do not change status todo ${todo}. \nError: ${error}`);
   }
